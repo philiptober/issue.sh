@@ -11,8 +11,8 @@ function issue {
 			printf "The option $BOLD_WHITE$2$RESET_COLOR is not valid. Please look at the following help-page.\r\n\r\n"
 		fi
 		
-		printf "usage: workOnIssue [--install | --uninstall | --reinstall | --enable-check | --disable-check | --status]
-                   [--global][<args>]
+		printf "usage: issue [--install | --uninstall | --reinstall | --enable-check | --disable-check | --status]
+                   [--global] [<args>]
 
 The available options are:
   ${BOLD_WHITE}install${RESET_COLOR}\tinstalls the hook inside your current repository and prepares the .gitconfig
@@ -105,7 +105,7 @@ fi'
 					fi
 					
 					if [[ $fromNormalDir == 1 && $toRepo == 1 || $oldRepo != "none" && $newRepo != "none" && $oldRepo != $newRepo ]]; then
-						workOnIssue --check
+						issue --check
 					fi
 				fi
 				
@@ -162,11 +162,11 @@ Do you wish to drop it? Then please answer yes.
 	
 	function __status {
 		if [[ "$1" == "--global" ]]; then
-			printf "Your global settings for workOnIssue
+			printf "Your global settings for <issue>
 
   Check: ${BOLD_WHITE}$(git config --global prefix.check)${RESET_COLOR}\r\n"
 		else
-			printf "Your local settings for workOnIssue
+			printf "Your local settings for <issue>
 
   Issue: ${BOLD_WHITE}$(git config --local prefix.commitMessage)${RESET_COLOR}
   Check: ${BOLD_WHITE}$(git config --local prefix.check)${RESET_COLOR}\r\n"
@@ -203,8 +203,8 @@ Do you wish to drop it? Then please answer yes.
 		
 		fi
 		
-	elif [[ -n $1 ]]; then
-		__setPrefix "$1"
+	elif [[ $1 == open && -n $2 ]]; then
+		__setPrefix "$2"
 	
 	else
 		__unsetPrefix
@@ -224,5 +224,5 @@ Do you wish to drop it? Then please answer yes.
 }
 
 if [[ "$(git config --global prefix.check)" == "enabled" ]]; then
-	workOnIssue --enable-check --global
+	issue --enable-check --global
 fi
