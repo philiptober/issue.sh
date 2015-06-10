@@ -1,6 +1,6 @@
 #!/bin/sh
 
-function workOnIssue {
+function issue {
 	
 	local hookFile="$(git rev-parse --show-toplevel)/.git/hooks/prepare-commit-msg"
 	local BOLD_WHITE="\e[1;37m"
