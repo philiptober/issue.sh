@@ -12,7 +12,7 @@ function issue {
 		fi
 		
 		printf "usage: issue [--install | --uninstall | --reinstall | --enable-check | --disable-check | --status]
-                   [--global] [<args>]
+                   [--global] [open] [<args>]
 
 The available options are:
   ${BOLD_WHITE}install${RESET_COLOR}\tinstalls the hook inside your current repository and prepares the .gitconfig
@@ -141,7 +141,7 @@ Do you wish to drop it? Then please answer yes.
 		fi
 	}
 	
-	function __setPrefix {
+	function __open_issue {
 		local PREFIX=$1;
 		# Saving a commit message prefix
 		# in the global .gitconfig.
@@ -204,7 +204,7 @@ Do you wish to drop it? Then please answer yes.
 		fi
 		
 	elif [[ $1 == open && -n $2 ]]; then
-		__setPrefix "$2"
+		__open_issue "$2"
 	
 	else
 		__unsetPrefix
