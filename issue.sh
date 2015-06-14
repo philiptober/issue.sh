@@ -11,8 +11,7 @@ function issue {
 			printf "The option $BOLD_WHITE$2$RESET_COLOR is not valid. Please look at the following help-page.\r\n\r\n"
 		fi
 		
-		printf "usage: issue [--install | --uninstall | --reinstall | --enable-check | --disable-check | --status]
-                   [--global] [open | close] [<args>]
+		printf "usage: issue [<option> | <command>] [--global] [<args>]
 
 The available options are:
   ${BOLD_WHITE}install${RESET_COLOR}\tinstalls the hook inside your current repository and prepares the .gitconfig
@@ -20,6 +19,10 @@ The available options are:
   ${BOLD_WHITE}reinstall${RESET_COLOR}\tuninstall + install
   ${BOLD_WHITE}enable-check${RESET_COLOR}\t\tenables checks on prompt start to verify, if the set issue is still up to date
   ${BOLD_WHITE}disable-check${RESET_COLOR}\tdisables checks on prompt start
+	
+The available commands are:
+  ${BOLD_WHITE}open${RESET_COLOR}\tsets up a new issue for new prefixes on commits
+  ${BOLD_WHITE}close${RESET_COLOR}\tcloses the current issue
   ${BOLD_WHITE}status${RESET_COLOR}\tshows the current issue and if check is enabled\r\n"
 	}
 	
@@ -222,9 +225,6 @@ Do you wish to drop it? Then please answer yes.
 		elif [[ $1 == "--check" ]]; then
 			__check
 		
-		elif [[ $1 == "--status" ]]; then
-			__status $2
-		
 		elif [[ $1 == "--help" ]]; then
 			__help
 		
@@ -238,6 +238,9 @@ Do you wish to drop it? Then please answer yes.
 	
 	elif [[ $1 == close ]]; then
 		__close_issue
+	
+	elif [[ $1 == "status" ]]; then
+			__status $2
 	
 	fi
 	
