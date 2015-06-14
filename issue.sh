@@ -112,6 +112,11 @@ fi'
 				unset -f __isNormalDir
 			}
 		else
+			if [[ ! -e $hookFile ]]; then
+				printf "The command ${BOLD_WHITE}issue${RESET_COLOR} isn"\'"t installed for your repository yet.\r\n"
+				return
+			fi
+			
 			$(git config --local prefix.check enabled)
 		fi
 	}
@@ -121,11 +126,21 @@ fi'
 			$(git config --global prefix.check disabled)
 			unset -f cd
 		else
+			if [[ ! -e $hookFile ]]; then
+				printf "The command ${BOLD_WHITE}issue${RESET_COLOR} isn"\'"t installed for your repository yet.\r\n"
+				return
+			fi
+			
 			$(git config --local prefix.check disabled)
 		fi
 	}
 	
 	function __check {
+		if [[ ! -e $hookFile ]]; then
+			printf "The command ${BOLD_WHITE}issue${RESET_COLOR} isn"\'"t installed for your repository yet.\r\n"
+			return
+		fi
+		
 		local issue=$(git config --local prefix.commitMessage)
 		
 		if [[ -n "$issue" && "$issue" != "none" ]]; then
@@ -142,6 +157,11 @@ Do you wish to drop it? Then please answer yes.
 	}
 	
 	function __open_issue {
+		if [[ ! -e $hookFile ]]; then
+			printf "The command ${BOLD_WHITE}issue${RESET_COLOR} isn"\'"t installed for your repository yet.\r\n"
+			return
+		fi
+		
 		local PREFIX=$1;
 		# Saving a commit message prefix
 		# in the global .gitconfig.
@@ -154,6 +174,11 @@ Do you wish to drop it? Then please answer yes.
 	}
 	
 	function __close_issue {
+		if [[ ! -e $hookFile ]]; then
+			printf "The command ${BOLD_WHITE}issue${RESET_COLOR} isn"\'"t installed for your repository yet.\r\n"
+			return
+		fi
+	
 		# If no prefix is passed, the prefix will be
 		# replaced with the string none in the global .gitconfig.
 		$(git config --local prefix.commitMessage none)
@@ -166,6 +191,11 @@ Do you wish to drop it? Then please answer yes.
 
   Check: ${BOLD_WHITE}$(git config --global prefix.check)${RESET_COLOR}\r\n"
 		else
+			if [[ ! -e $hookFile ]]; then
+				printf "The command ${BOLD_WHITE}issue${RESET_COLOR} isn"\'"t installed for your repository yet.\r\n"
+				return
+			fi
+			
 			printf "Your local settings for <issue>
 
   Issue: ${BOLD_WHITE}$(git config --local prefix.commitMessage)${RESET_COLOR}
