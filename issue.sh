@@ -50,6 +50,7 @@ fi'
 		else
 			printf "\r\n  Creating hook-file...\r\n"
 			echo "$hook" > "$hookFile"
+			chmod a+x "$hookFile"
 			
 			printf "  Setting up .gitconfig...\r\n"
 			$(git config --local prefix.commitMessage none)
