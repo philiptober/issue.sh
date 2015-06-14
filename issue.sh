@@ -12,7 +12,7 @@ function issue {
 		fi
 		
 		printf "usage: issue [--install | --uninstall | --reinstall | --enable-check | --disable-check | --status]
-                   [--global] [open] [<args>]
+                   [--global] [open | close] [<args>]
 
 The available options are:
   ${BOLD_WHITE}install${RESET_COLOR}\tinstalls the hook inside your current repository and prepares the .gitconfig
@@ -153,7 +153,7 @@ Do you wish to drop it? Then please answer yes.
 		printf "in your repsitory: http://git.io/vITez\r\n\r\n"
 	}
 	
-	function __unsetPrefix {
+	function __close_issue {
 		# If no prefix is passed, the prefix will be
 		# replaced with the string none in the global .gitconfig.
 		$(git config --local prefix.commitMessage none)
@@ -206,8 +206,8 @@ Do you wish to drop it? Then please answer yes.
 	elif [[ $1 == open && -n $2 ]]; then
 		__open_issue "$2"
 	
-	else
-		__unsetPrefix
+	elif [[ $1 == close ]]; then
+		__close_issue
 	
 	fi
 	
@@ -218,8 +218,8 @@ Do you wish to drop it? Then please answer yes.
 	unset -f __enableCheck
 	unset -f __disableCheck
 	unset -f __check
-	unset -f __setPrefix
-	unset -f __unsetPrefix
+	unset -f __open_issue
+	unset -f __close_issue
 	unset -f __status
 }
 
