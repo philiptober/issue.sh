@@ -166,12 +166,14 @@ Do you wish to drop it? Then please answer yes.
 			return
 		fi
 		
-		local PREFIX=$1;
-		# Saving a commit message prefix
-		# in the global .gitconfig.
-		# It will be read by the hook to set the prefix
-		# in front of the commit message.
-		$(git config --local prefix.commitMessage "$PREFIX")
+		local issue=$1;
+		local branch=$2;
+		
+		if [[ -n $branch ]]; then
+			git checkout -b "$branch"
+		fi
+		
+		$(git config --local prefix.commitMessage "$issue")
 		printf "\r\n${BOLD_WHITE}Prefixing enabled${RESET_COLOR}\r\n"
 		printf "Make sure enabling the prepare-commit-msg hook\r\n"
 		printf "in your repsitory: http://git.io/vITez\r\n\r\n"
@@ -235,7 +237,7 @@ Do you wish to drop it? Then please answer yes.
 		fi
 		
 	elif [[ $1 == open && -n $2 ]]; then
-		__open_issue "$2"
+		__open_issue "$2" "$3"
 	
 	elif [[ $1 == close ]]; then
 		__close_issue
