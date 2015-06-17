@@ -35,13 +35,14 @@ BOLD_CYAN='\''\033[1;36m'\''
 RESET_COLOR='\''\033[0m'\''
 
 COMMIT_PREFIX=$(git config --local prefix.commitMessage)
+DELIMITER=$(git config --local prefix.delimiter | sed '\''s/'\'\\\"\''//g'\'')
 COMMIT_MESSAGE=$(cat "$1")
 
 # If an issue number exits it should be set
 # before the commit message
-if [[ -n "$COMMIT_PREFIX" && "$COMMIT_PREFIX" != none ]]; then
+if [[ -n "$COMMIT_PREFIX" && "$COMMIT_PREFIX" != none && -n "$DELIMITER" ]]; then
 	printf "\r\n${CYAN}Prefixing commit message with ${BOLD_CYAN}$COMMIT_PREFIX${RESET_COLOR}\r\n"
-	echo "$COMMIT_PREFIX $COMMIT_MESSAGE" > "$1";
+	echo "${COMMIT_PREFIX}${DELIMITER}${COMMIT_MESSAGE}" > "$1";
 fi'
 		
 		if [[ "$1" == "--global" ]]; then
@@ -54,6 +55,7 @@ fi'
 			
 			printf "  Setting up .gitconfig...\r\n"
 			$(git config --local prefix.commitMessage none)
+			$(git config --local prefix.delimiter \"" "\")
 			$(git config --local prefix.check disabled)
 		fi
 	}
@@ -160,6 +162,12 @@ Do you wish to drop it? Then please answer yes.
 		fi
 	}
 	
+	function __set_delimiter {
+		if [[ -n "$1" ]]; then
+			git config --local prefix.delimiter \""$1"\"
+		fi
+	}
+	
 	function __open_issue {
 		if [[ ! -e $hookFile ]]; then
 			printf "The command ${BOLD_WHITE}issue${RESET_COLOR} isn"\'"t installed for your repository yet.\r\n"
@@ -205,6 +213,7 @@ Do you wish to drop it? Then please answer yes.
 			printf "Your local settings for <issue>
 
   Issue: ${BOLD_WHITE}$(git config --local prefix.commitMessage)${RESET_COLOR}
+  Delimiter: ${BOLD_WHITE}$(git config --local prefix.delimiter)${RESET_COLOR}
   Check: ${BOLD_WHITE}$(git config --local prefix.check)${RESET_COLOR}\r\n"
 		fi
 	}
@@ -227,6 +236,9 @@ Do you wish to drop it? Then please answer yes.
 		
 		elif [[ $1 == "--check" ]]; then
 			__check
+		
+		elif [[ $1 == "--set-delimiter" ]]; then
+			__set_delimiter "$2"
 		
 		elif [[ $1 == "--help" ]]; then
 			__help
@@ -254,6 +266,7 @@ Do you wish to drop it? Then please answer yes.
 	unset -f __enableCheck
 	unset -f __disableCheck
 	unset -f __check
+	unset -f __set_delimiter
 	unset -f __open_issue
 	unset -f __close_issue
 	unset -f __status
