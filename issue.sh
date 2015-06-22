@@ -19,6 +19,7 @@ The available options are:
   ${BOLD_WHITE}reinstall${RESET_COLOR}       uninstall + install
   ${BOLD_WHITE}enable-check${RESET_COLOR}    enables checks on prompt start to verify, if the set issue is still up to date
   ${BOLD_WHITE}disable-check${RESET_COLOR}   disables checks on prompt start
+  ${BOLD_WHITE}set-delimiter${RESET_COLOR}   set which characters should divide the message prefix and the message itself
 	
 The available commands are:
   ${BOLD_WHITE}open${RESET_COLOR}            sets up a new issue for new prefixes on commits
