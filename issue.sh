@@ -34,13 +34,14 @@ CYAN='\''\033[0;36m'\''
 BOLD_CYAN='\''\033[1;36m'\''
 RESET_COLOR='\''\033[0m'\''
 
+COMMIT_TYPE=$2
 COMMIT_PREFIX=$(git config --local prefix.commitMessage)
 DELIMITER=$(git config --local prefix.delimiter | sed '\''s/'\'\\\"\''//g'\'')
 COMMIT_MESSAGE=$(cat "$1")
 
 # If an issue number exits it should be set
 # before the commit message
-if [[ -n "$COMMIT_PREFIX" && "$COMMIT_PREFIX" != none && -n "$DELIMITER" ]]; then
+if [[ "$COMMIT_TYPE" == message && -n "$COMMIT_PREFIX" && "$COMMIT_PREFIX" != none && -n "$DELIMITER" ]]; then
 	printf "\r\n${CYAN}Prefixing commit message with ${BOLD_CYAN}$COMMIT_PREFIX${RESET_COLOR}\r\n"
 	echo "${COMMIT_PREFIX}${DELIMITER}${COMMIT_MESSAGE}" > "$1";
 fi'
